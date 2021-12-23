@@ -5,7 +5,7 @@ from instadm import path, url_name, send_message, login
 from constants import username, instagram_home, user_secret, winnerName, post_short_code, message
 
 L = instaloader.Instaloader()
-L.login(username, user_secret)
+# L.login(username, user_secret)
 
 def get_all_users_that_commented():
     post = instaloader.Post.from_shortcode(L.context, post_short_code)
@@ -37,7 +37,7 @@ if __name__ == '__main__':
 
     login_to_media_account()
 
-    # commenters:
+    # Commenters will be used below... not ready to send yet so hard coding seth's account
     for user in ["sethbenton"]:
         # visit their page and send a message
         # url_name(instagram_home)

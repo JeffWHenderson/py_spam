@@ -61,6 +61,8 @@ def send_message(username, message):
         ActionChains.send_keys(line)
         ActionChains(chrome).key_down(Keys.SHIFT).key_down(Keys.RETURN).key_up(Keys.RETURN).key_up(Keys.SHIFT).perform()
 
+    ####******* WARNING **********#####
+    ### IF YOU UNCOMMENT THE BELOW LINE THE MESSAGES WILL SEND TO USER
     # mbox.send_keys(Keys.RETURN)
 
     time.sleep(.5)
