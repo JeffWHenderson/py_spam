@@ -49,7 +49,11 @@ def send_message(username, message):
     time.sleep(.5)
     send_message_button = chrome.find_element_by_xpath('//*[@id="react-root"]/section/div/div[2]/div/div/div[2]/div/div[3]/div/button')
     send_message_button.click(.5)
+
+    # type users name into the dm prompt
     ActionChains(chrome).send_keys(username)
+
+    # click next
     next_button = chrome.find_element_by_xpath('/html/body/div[6]/div/div/div[1]/div/div[2]/div/button/div')
     next_button.click()
     # mbox = chrome.find_element_by_xpath('//*[@id="react-root"]/section/div/div[2]/div/div/div[2]/div[2]/div/div[2]/div/div/div[2]/textarea')
