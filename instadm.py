@@ -1,68 +1,86 @@
 from selenium import webdriver
-from selenium.webdriver import ActionChains
 from selenium.webdriver.common.keys import Keys
 import time
+from constants import username, instagram_home, user_secret, message
 
 
 def path():
     global chrome
-
     # starts a new chrome session
-    chrome = webdriver.Chrome('./chromedriver')  # Add path if required
+    chrome = webdriver.Chrome('./chromedriver')
 
 
 def url_name(url):
     chrome.get(url)
-    # adjust sleep if you want
-    time.sleep(2)
+    time.sleep(4)   # we can be conservative with these sleep timers because it only happens once & is essential
 
 
-def login(username, your_password):
+def login(logged_in_user, logged_in_users_pw):
     # finds the username box
     usern = chrome.find_element_by_name("username")
-    # sends the entered username
-    usern.send_keys(username)
+    usern.send_keys(logged_in_user)
 
     # finds the password box
     passw = chrome.find_element_by_name("password")
-    # sends the entered password
-    passw.send_keys(your_password)
-
-    # press enter after sending password
+    passw.send_keys(logged_in_users_pw)
     passw.send_keys(Keys.RETURN)
-    time.sleep(4)
+    time.sleep(4)  # we can be conservative with these sleep timers because it only happens once & is essential
 
     # Finding Not Now button
     notk = chrome.find_element_by_class_name("yWX7d")
     notk.click()
-    time.sleep(3)
+    time.sleep(4)  # we can be conservative with these sleep timers because it only happens once & is essential
 
     # Finding Not Now button #2
     notk2 = chrome.find_element_by_class_name("HoLwm")
     notk2.click()
-    time.sleep(3)
+    time.sleep(4)   # we can be conservative with these sleep timers because it only happens once & is essential
+    # CONGRATS, YOU ARE LOGGED IN!!
 
 
-def send_message(username, message):
+def send_message(contestant):
     inbox_icon = chrome.find_element_by_xpath('//*[@id="react-root"]/section/nav/div[2]/div/div/div[3]/div/div[2]/a')
     inbox_icon.click()
-    time.sleep(.5)
+    time.sleep(.5)  # all these sleeps need to be cleaned.. they are just to throttle speed for now
+
     send_message_button = chrome.find_element_by_xpath('//*[@id="react-root"]/section/div/div[2]/div/div/div[2]/div/div[3]/div/button')
-    send_message_button.click(.5)
+    send_message_button.click()
+    time.sleep(3)
 
     # type users name into the dm prompt
-    ActionChains(chrome).send_keys(username)
+    who_you_tryna_dm = chrome.find_element_by_xpath('/html/body/div[6]/div/div/div[2]/div[1]/div/div[2]/input')
+    who_you_tryna_dm.send_keys(contestant)
+
+    time.sleep(4)  # all these sleeps need to be cleaned.. they are just to throttle speed for now
+    search_result_dm = chrome.find_element_by_xpath('/html/body/div[6]/div/div/div[2]/div[2]/div[2]/div/div[3]/button/div')
+    search_result_dm.click()
+    time.sleep(.5)  # all these sleeps need to be cleaned.. they are just to throttle speed for now
 
     # click next
     next_button = chrome.find_element_by_xpath('/html/body/div[6]/div/div/div[1]/div/div[2]/div/button/div')
     next_button.click()
-    # mbox = chrome.find_element_by_xpath('//*[@id="react-root"]/section/div/div[2]/div/div/div[2]/div[2]/div/div[2]/div/div/div[2]/textarea')
-    for line in message.split("\n"):
-        ActionChains.send_keys(line)
-        ActionChains(chrome).key_down(Keys.SHIFT).key_down(Keys.RETURN).key_up(Keys.RETURN).key_up(Keys.SHIFT).perform()
+    time.sleep(2)  # all these sleeps need to be cleaned.. they are just to throttle speed for now
 
-    ####******* WARNING **********#####
-    ### IF YOU UNCOMMENT THE BELOW LINE THE MESSAGES WILL SEND TO USER
-    # mbox.send_keys(Keys.RETURN)
+    message_input = chrome.find_element_by_xpath('//*[@id="react-root"]/section/div/div[2]/div/div/div[2]/div[2]/div/div[2]/div/div/div[2]/textarea')
+    message_input.send_keys(message)
 
-    time.sleep(.5)
+    message_input.send_keys(Keys.RETURN)
+
+    time.sleep(.5)  # all these sleeps need to be cleaned.. they are just to throttle speed for now
+
+
+def login_to_media_account():
+    path()
+    time.sleep(1)  # all these sleeps need to be cleaned.. they are just to throttle speed for now
+    url_name(instagram_home)
+    login(username, user_secret)
+
+if __name__ == '__main__':
+    login_to_media_account()
+
+    for contestant_ig_name in ["jeffwhenderson"]:
+        # visit their page and send a message
+        # url_name(instagram_home)
+        send_message(contestant_ig_name)
+
+    chrome.close()
