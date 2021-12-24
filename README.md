@@ -17,12 +17,12 @@ UPDATE THE constants.py
 ## !!REQUIRED!!
 Python3
 
-##RUN on the commandline
-generate 4 files with all the names of people that commented on a post:
-  ``python3 generate.py``
-
-Send a personalized message to all users given a file:
-  ``python3 instadm.py -f EXAMPLE_FILENAME.txt``
+#RUN on the commandline
+## example flow: 
+* run ``python3 generate.py``, this will take some time but generate 4 files.
+* run ``python instadm.py``
+* when prompted you can enter username_1.txt
+* all the users in username_1.txt will be sent a file
 
 ### TroubleShooting
 I expect something annoying will be if you have a different version of chrome than the chrome driver. Potentially you will need to download the chromedriver that matches your google chrome version

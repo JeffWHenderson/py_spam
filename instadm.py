@@ -10,7 +10,7 @@ def path():
     chrome = webdriver.Chrome('./chromedriver')
 
 
-def url_name(url):
+def go_to_url(url):
     chrome.get(url)
     time.sleep(4)   # we can be conservative with these sleep timers because it only happens once & is essential
 
@@ -41,7 +41,7 @@ def login(logged_in_user, logged_in_users_pw):
 def send_message(contestant):
     inbox_icon = chrome.find_element_by_xpath('//*[@id="react-root"]/section/nav/div[2]/div/div/div[3]/div/div[2]/a')
     inbox_icon.click()
-    time.sleep(.5)  # all these sleeps need to be cleaned.. they are just to throttle speed for now
+    time.sleep(.5)  # we can lower these sleep times. They are just to throttle speed for now
 
     send_message_button = chrome.find_element_by_xpath('//*[@id="react-root"]/section/div/div[2]/div/div/div[2]/div/div[3]/div/button')
     send_message_button.click()
@@ -51,36 +51,52 @@ def send_message(contestant):
     who_you_tryna_dm = chrome.find_element_by_xpath('/html/body/div[6]/div/div/div[2]/div[1]/div/div[2]/input')
     who_you_tryna_dm.send_keys(contestant)
 
-    time.sleep(4)  # all these sleeps need to be cleaned.. they are just to throttle speed for now
+    time.sleep(4)  # we can lower these sleep times. They are just to throttle speed for now
     search_result_dm = chrome.find_element_by_xpath('/html/body/div[6]/div/div/div[2]/div[2]/div[2]/div/div[3]/button/div')
     search_result_dm.click()
-    time.sleep(.5)  # all these sleeps need to be cleaned.. they are just to throttle speed for now
+    time.sleep(.5)  # we can lower these sleep times. They are just to throttle speed for now
 
     # click next
     next_button = chrome.find_element_by_xpath('/html/body/div[6]/div/div/div[1]/div/div[2]/div/button/div')
     next_button.click()
-    time.sleep(2)  # all these sleeps need to be cleaned.. they are just to throttle speed for now
+    time.sleep(2)  # we can lower these sleep times. They are just to throttle speed for now
 
     message_input = chrome.find_element_by_xpath('//*[@id="react-root"]/section/div/div[2]/div/div/div[2]/div[2]/div/div[2]/div/div/div[2]/textarea')
     message_input.send_keys(message)
 
     message_input.send_keys(Keys.RETURN)
 
-    time.sleep(.5)  # all these sleeps need to be cleaned.. they are just to throttle speed for now
+    time.sleep(.5)  # we can lower these sleep times. They are just to throttle speed for now
 
 
 def login_to_media_account():
     path()
-    time.sleep(1)  # all these sleeps need to be cleaned.. they are just to throttle speed for now
-    url_name(instagram_home)
+    time.sleep(1)  # we can lower these sleep times. They are just to throttle speed for now
+    go_to_url(instagram_home)
     login(username, user_secret)
 
 if __name__ == '__main__':
+    filename = input("what is the name of the file you want to read usernames from? ")
     login_to_media_account()
 
-    for contestant_ig_name in ["jeffwhenderson"]:
-        # visit their page and send a message
-        # url_name(instagram_home)
-        send_message(contestant_ig_name)
+    f = open(filename, "r")
+    count = 0
 
+    while True:
+        count += 1
+
+        # Get next line from file
+        contestant_ig_name = f.readline()
+
+        if not contestant_ig_name:
+            break
+
+        try:
+            send_message(contestant_ig_name.strip())
+        except Exception as e:
+            print("oh no!!! a message to " + contestant_ig_name + " failed")
+            time.sleep(3)  # we can lower these sleep times. They are just to throttle speed for now
+            go_to_url(instagram_home)
+    
     chrome.close()
+    f.close()
