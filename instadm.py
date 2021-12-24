@@ -20,22 +20,30 @@ def login(logged_in_user, logged_in_users_pw):
     # finds the username box
     usern = chrome.find_element(By.NAME, "username")
     usern.send_keys(logged_in_user)
+    time.sleep(1)
 
     # finds the password box
     passw = chrome.find_element(By.NAME, "password")
     passw.send_keys(logged_in_users_pw)
+    time.sleep(4)  # we can be conservative with these sleep timers because it only happens once & is essential
     passw.send_keys(Keys.RETURN)
     time.sleep(4)  # we can be conservative with these sleep timers because it only happens once & is essential
 
     # Finding Not Now button
-    notk = chrome.find_element(By.CLASS_NAME, "yWX7d")
-    notk.click()
-    time.sleep(4)  # we can be conservative with these sleep timers because it only happens once & is essential
+    try:
+        notk = chrome.find_element(By.CLASS_NAME, "yWX7d")
+        notk.click()
+        time.sleep(4)  # we can be conservative with these sleep timers because it only happens once & is essential
+    except Exception as e:
+        print("oh no!!! a message to " + contestant_ig_name + " failed")
 
     # Finding Not Now button #2
-    notk2 = chrome.find_element(By.CLASS_NAME, "HoLwm")
-    notk2.click()
-    time.sleep(4)   # we can be conservative with these sleep timers because it only happens once & is essential
+    try:
+        notk2 = chrome.find_element(By.CLASS_NAME, "HoLwm")
+        notk2.click()
+        time.sleep(4)   # we can be conservative with these sleep timers because it only happens once & is essential
+    except Exception as e:
+        print("oh no!!! a message to " + contestant_ig_name + " failed")
     # CONGRATS, YOU ARE LOGGED IN!!
 
 
